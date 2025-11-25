@@ -319,6 +319,9 @@ export default function AberdeenPage() {
                         id: range.id,
                         name: range.name,
                         address: range.address,
+                        city: range.city,
+                        county: range.county,
+                        postcode: range.postcode,
                         latitude: range.latitude,
                         longitude: range.longitude
                       }))}
