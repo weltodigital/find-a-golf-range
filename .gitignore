@@ -58,3 +58,4 @@ manual_*.txt
 # Scripts and data directories
 /scripts/
 *.png
+!public/*.png
