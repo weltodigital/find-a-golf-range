@@ -16,8 +16,8 @@ export default function Header() {
               <Image
                 src="/logo.png"
                 alt="Find A Golf Range Logo"
-                width={60}
-                height={60}
+                width={100}
+                height={100}
                 className="rounded-lg"
               />
             </Link>
