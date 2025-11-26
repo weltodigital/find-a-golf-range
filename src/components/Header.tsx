@@ -6,6 +6,7 @@ import Image from 'next/image'
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
   return (
     <header className="bg-white shadow-sm">
@@ -24,15 +25,35 @@ export default function Header() {
           </div>
 
           <nav className="hidden md:flex space-x-8">
-            <Link href="/" className="text-gray-700 hover:text-primary font-medium">
-              Home
-            </Link>
-            <Link href="/uk" className="text-gray-700 hover:text-primary font-medium">
-              UK Ranges
-            </Link>
-            <Link href="/australia" className="text-gray-700 hover:text-primary font-medium">
-              Australia Ranges
-            </Link>
+            <div className="relative">
+              <button
+                className="text-gray-700 hover:text-primary font-medium flex items-center"
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              >
+                Driving Ranges
+                <svg className="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              {isDropdownOpen && (
+                <div className="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-200 z-10">
+                  <Link
+                    href="/uk"
+                    className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-primary"
+                    onClick={() => setIsDropdownOpen(false)}
+                  >
+                    UK Ranges
+                  </Link>
+                  <Link
+                    href="/australia"
+                    className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-primary"
+                    onClick={() => setIsDropdownOpen(false)}
+                  >
+                    Australia Ranges
+                  </Link>
+                </div>
+              )}
+            </div>
           </nav>
 
           <button
@@ -50,15 +71,15 @@ export default function Header() {
         {isMenuOpen && (
           <div className="md:hidden py-4 border-t">
             <nav className="flex flex-col space-y-2">
-              <Link href="/" className="text-gray-700 hover:text-primary font-medium py-2">
-                Home
-              </Link>
-              <Link href="/uk" className="text-gray-700 hover:text-primary font-medium py-2">
-                UK Ranges
-              </Link>
-              <Link href="/australia" className="text-gray-700 hover:text-primary font-medium py-2">
-                Australia Ranges
-              </Link>
+              <div className="py-2">
+                <span className="text-gray-700 font-medium block mb-2">Driving Ranges</span>
+                <Link href="/uk" className="text-gray-600 hover:text-primary font-medium py-1 pl-4 block">
+                  UK Ranges
+                </Link>
+                <Link href="/australia" className="text-gray-600 hover:text-primary font-medium py-1 pl-4 block">
+                  Australia Ranges
+                </Link>
+              </div>
             </nav>
           </div>
         )}
