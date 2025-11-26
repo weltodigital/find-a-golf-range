@@ -7,15 +7,14 @@ export default function Footer() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="col-span-1 md:col-span-2">
-            <div className="flex items-center space-x-3 mb-4">
+            <div className="flex items-center mb-4">
               <Image
                 src="/logo.png"
                 alt="Find A Golf Range Logo"
-                width={40}
-                height={40}
+                width={60}
+                height={60}
                 className="rounded-lg"
               />
-              <span className="text-xl font-bold">Find A Golf Range</span>
             </div>
             <p className="text-gray-300 mb-4 max-w-md">
               The UK&apos;s most comprehensive directory of golf driving ranges.

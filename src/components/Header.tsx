@@ -12,15 +12,14 @@ export default function Header() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
-            <Link href="/" className="flex items-center space-x-3">
+            <Link href="/" className="flex items-center">
               <Image
                 src="/logo.png"
                 alt="Find A Golf Range Logo"
-                width={40}
-                height={40}
+                width={60}
+                height={60}
                 className="rounded-lg"
               />
-              <span className="text-xl font-bold text-gray-900">Find A Golf Range</span>
             </Link>
           </div>
 
