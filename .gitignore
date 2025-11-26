@@ -38,17 +38,23 @@ yarn-error.log*
 
 # CSV files and scripts
 *.csv
-*.js
+fix-*.js
+*-data.js
+*-coordinates.js
+generate_*.js
+import-*.js
+update-*.js
+website-*.js
+automated-*.js
 *.md
 *.txt
+manual_*.txt
 *.json
 !package.json
 !package-lock.json
 !next.config.js
 !tsconfig.json
-!public/*.json
 
 # Scripts and data directories
 /scripts/
 *.png
-/public/complete_golf_ranges_database.json

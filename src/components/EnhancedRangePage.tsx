@@ -375,7 +375,7 @@ export default function EnhancedRangePage({ slug, cityName, cityPath, cityCenter
                   <div className="bg-gray-50 rounded-lg p-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'].map((day) => {
-                        const hours = range.opening_hours?.[day]
+                        const hours = typeof range.opening_hours === 'object' ? range.opening_hours?.[day] : range.opening_hours
                         if (!hours) return null
                         return (
                           <div key={day} className="flex justify-between py-2 border-b border-gray-200 last:border-b-0">

@@ -32,7 +32,7 @@ export default function SingleRangeMap({ range, cityCenter, zoom = 12 }: SingleR
       })
 
       // Create map centered on the driving range
-      const map = L.map(mapRef.current).setView([range.latitude!, range.longitude!], zoom)
+      const map = L.map(mapRef.current!).setView([range.latitude!, range.longitude!], zoom)
       mapInstanceRef.current = map
 
       // Add tile layer
@@ -74,10 +74,7 @@ export default function SingleRangeMap({ range, cityCenter, zoom = 12 }: SingleR
     }
   }, [range, cityCenter, zoom])
 
-  useEffect(() => {
-    // Import CSS
-    import('leaflet/dist/leaflet.css')
-  }, [])
+  // CSS is imported via CDN link in the main layout
 
   if (!range.latitude || !range.longitude) {
     return (

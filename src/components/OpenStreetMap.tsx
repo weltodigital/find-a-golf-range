@@ -32,7 +32,7 @@ export default function OpenStreetMap({ ranges, center, zoom }: OpenStreetMapPro
       })
 
       // Create map
-      const map = L.map(mapRef.current).setView(center, zoom)
+      const map = L.map(mapRef.current!).setView(center, zoom)
       mapInstanceRef.current = map
 
       // Add tile layer
@@ -78,10 +78,7 @@ export default function OpenStreetMap({ ranges, center, zoom }: OpenStreetMapPro
     }
   }, [ranges, center, zoom])
 
-  useEffect(() => {
-    // Import CSS
-    import('leaflet/dist/leaflet.css')
-  }, [])
+  // CSS is imported via CDN link in the main layout
 
   return (
     <div className="w-full h-full">

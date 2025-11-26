@@ -76,7 +76,7 @@ export default function LocationSchemaMarkup({
           },
           "sport": "Golf",
           "telephone": range.phone,
-          "url": range.website
+          "website": range.website
         }
       }))
     }
