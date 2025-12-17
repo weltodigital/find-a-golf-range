@@ -210,7 +210,7 @@ export default function EnhancedSimulatorPage({ slug, cityName, cityPath, cityCe
                       onError={(e) => {
                         // Hide image container if image fails to load
                         const target = e.target as HTMLImageElement;
-                        const container = target.closest('.mb-8');
+                        const container = target.closest('.mb-8') as HTMLElement;
                         if (container) {
                           container.style.display = 'none';
                         }
@@ -265,7 +265,7 @@ export default function EnhancedSimulatorPage({ slug, cityName, cityPath, cityCe
                           onError={(e) => {
                             // Hide image container if image fails to load
                             const target = e.target as HTMLImageElement;
-                            const container = target.closest('.relative');
+                            const container = target.closest('.relative') as HTMLElement;
                             if (container) {
                               container.style.display = 'none';
                             }

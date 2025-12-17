@@ -113,7 +113,7 @@ export default function InvernessPage() {
 
   // Filter ranges within max distance
   const nearbyRanges = ranges.filter(range =>
-    range.distance !== undefined && range.distance <= maxDistance
+    range.distance !== undefined && range.distance !== null && range.distance <= maxDistance
   )
 
   // Sort ranges based on selected criteria

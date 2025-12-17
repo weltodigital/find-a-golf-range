@@ -25,7 +25,7 @@ export default function SimulatorCard({ simulator, distanceFrom = 'London' }: Si
             onError={(e) => {
               // Hide image container if image fails to load
               const target = e.target as HTMLImageElement;
-              const container = target.closest('.w-full.h-48');
+              const container = target.closest('.w-full.h-48') as HTMLElement;
               if (container) {
                 container.style.display = 'none';
               }

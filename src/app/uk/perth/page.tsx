@@ -116,7 +116,7 @@ export default function PerthPage() {
 
   // Filter ranges by distance
   const filteredRanges = ranges.filter(range =>
-    range.distance !== undefined && range.distance <= maxDistance
+    range.distance !== undefined && range.distance !== null && range.distance <= maxDistance
   )
 
   const sortedRanges = [...filteredRanges].sort((a, b) => {
