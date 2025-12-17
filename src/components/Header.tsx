@@ -26,33 +26,20 @@ export default function Header() {
 
           <nav className="hidden md:flex space-x-8">
             <div className="relative">
-              <button
-                className="text-gray-700 hover:text-primary font-medium flex items-center"
-                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              <Link
+                href="/uk"
+                className="text-gray-700 hover:text-primary font-medium"
               >
                 Driving Ranges
-                <svg className="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-              {isDropdownOpen && (
-                <div className="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-200 z-10">
-                  <Link
-                    href="/uk"
-                    className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-primary"
-                    onClick={() => setIsDropdownOpen(false)}
-                  >
-                    UK Ranges
-                  </Link>
-                  <Link
-                    href="/australia"
-                    className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-primary"
-                    onClick={() => setIsDropdownOpen(false)}
-                  >
-                    Australia Ranges
-                  </Link>
-                </div>
-              )}
+              </Link>
+            </div>
+            <div className="relative">
+              <Link
+                href="/simulators"
+                className="text-gray-700 hover:text-primary font-medium"
+              >
+                Indoor Simulators
+              </Link>
             </div>
           </nav>
 
@@ -71,15 +58,15 @@ export default function Header() {
         {isMenuOpen && (
           <div className="md:hidden py-4 border-t">
             <nav className="flex flex-col space-y-2">
-              <div className="py-2">
-                <span className="text-gray-700 font-medium block mb-2">Driving Ranges</span>
-                <Link href="/uk" className="text-gray-600 hover:text-primary font-medium py-1 pl-4 block">
-                  UK Ranges
-                </Link>
-                <Link href="/australia" className="text-gray-600 hover:text-primary font-medium py-1 pl-4 block">
-                  Australia Ranges
-                </Link>
-              </div>
+              <Link href="/uk" className="text-gray-700 hover:text-primary font-medium py-2 block">
+                Driving Ranges
+              </Link>
+              <Link href="/simulators" className="text-gray-700 hover:text-primary font-medium py-2 block">
+                Indoor Simulators
+              </Link>
+              <Link href="/australia" className="text-gray-700 hover:text-primary font-medium py-2 block">
+                Australia Ranges
+              </Link>
             </nav>
           </div>
         )}

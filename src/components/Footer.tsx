@@ -31,7 +31,12 @@ export default function Footer() {
             <ul className="space-y-2">
               <li>
                 <Link href="/uk" className="text-gray-300 hover:text-primary transition-colors">
-                  UK Ranges
+                  Driving Ranges
+                </Link>
+              </li>
+              <li>
+                <Link href="/simulators" className="text-gray-300 hover:text-primary transition-colors">
+                  Indoor Simulators
                 </Link>
               </li>
               <li>

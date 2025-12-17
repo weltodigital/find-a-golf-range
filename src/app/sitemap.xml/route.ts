@@ -42,6 +42,12 @@ export async function GET() {
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>${baseUrl}/simulators</loc>
+    <lastmod>${currentDate}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>${baseUrl}/australia</loc>
     <lastmod>${currentDate}</lastmod>
     <changefreq>weekly</changefreq>
@@ -64,6 +70,15 @@ export async function GET() {
     <priority>0.8</priority>
   </url>`
     })
+
+    // Add simulator city pages (for now just London)
+    xml += `
+  <url>
+    <loc>${baseUrl}/simulators/london</loc>
+    <lastmod>${currentDate}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>`
 
     // Add individual range pages
     ranges?.forEach(range => {

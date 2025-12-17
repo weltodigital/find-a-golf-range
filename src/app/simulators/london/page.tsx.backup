@@ -1,0 +1,882 @@
+'use client'
+
+import { useState, useEffect } from 'react'
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
+import SimulatorCard from '@/components/SimulatorCard'
+import { IndoorSimulator } from '@/types'
+import dynamic from 'next/dynamic'
+import Link from 'next/link'
+
+// Dynamically import OpenStreetMap to avoid SSR issues
+const OpenStreetMap = dynamic(() => import('@/components/OpenStreetMap'), {
+  ssr: false,
+  loading: () => <div className="w-full h-64 bg-gray-200 rounded-lg flex items-center justify-center">Loading map...</div>
+})
+
+export default function LondonSimulatorsPage() {
+  const [simulators, setSimulators] = useState<IndoorSimulator[]>([])
+  const [loading, setLoading] = useState(true)
+  const [sortBy, setSortBy] = useState<'name' | 'price' | 'bays' | 'distance'>('distance')
+  const [maxDistance, setMaxDistance] = useState<number>(25)
+
+  useEffect(() => {
+    const loadLondonSimulators = async () => {
+      try {
+        // London city center coordinates (Charing Cross area)
+        const LONDON_CENTER = { lat: 51.5074, lng: -0.1278 }
+
+        // Function to calculate distance between two points using Haversine formula
+        const calculateDistance = (lat1: number, lng1: number, lat2: number, lng2: number): number => {
+          const R = 3959 // Earth's radius in miles
+          const dLat = (lat2 - lat1) * Math.PI / 180
+          const dLng = (lng2 - lng1) * Math.PI / 180
+          const a =
+            Math.sin(dLat/2) * Math.sin(dLat/2) +
+            Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+            Math.sin(dLng/2) * Math.sin(dLng/2)
+          const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))
+          return R * c
+        }
+
+        const londonSimulators: IndoorSimulator[] = [
+          {
+            id: '1',
+            name: 'Urban Golf',
+            slug: 'urban-golf',
+            address: '12 Smithfield Street',
+            city: 'London',
+            county: 'Greater London',
+            postcode: 'EC1A 9LA',
+            phone: '020 7248 8600',
+            email: 'bookings@urbangolf.co.uk',
+            website: 'https://urbangolf.co.uk/',
+            latitude: 51.5190,
+            longitude: -0.1019,
+            simulator_brand: 'Advanced ball tracking',
+            num_simulators: 11,
+            simulator_features: 'TrackMan technology, over 100 courses, VIP room with 180-degree curved screen',
+            description: "London's original indoor golf venue established in 2004",
+            detailed_description: "11 state-of-the-art simulators with advanced ball tracking technology. Features The Bunker VIP room with 180-degree curved screen and custom simulator setup. Over 100 courses available including famous courses worldwide.",
+            pricing: 'From £40/hour off-peak, £80/hour peak, VIP room £100-120/hour',
+            opening_hours: JSON.stringify({
+              'Monday': '12:00-22:00',
+              'Tuesday': '12:00-22:00',
+              'Wednesday': '12:00-23:00',
+              'Thursday': '12:00-23:00',
+              'Friday': '12:00-23:00',
+              'Saturday': '12:00-20:00',
+              'Sunday': '12:00-18:30'
+            })
+          },
+          {
+            id: '2',
+            name: 'Project Golf',
+            slug: 'project-golf',
+            address: '48-54 Moorgate',
+            city: 'London',
+            county: 'Greater London',
+            postcode: 'EC2R 6EJ',
+            phone: '020 3778 4653',
+            email: 'info@project.golf',
+            website: 'https://project.golf/',
+            latitude: 51.5186,
+            longitude: -0.0886,
+            simulator_brand: 'TrackMan 4',
+            num_simulators: 6,
+            simulator_features: 'TrackMan 4 technology, 100+ courses, city location',
+            description: 'TrackMan 4 simulators in the City of London',
+            detailed_description: '6 TrackMan 4 simulators offering precise ball tracking and club data. Located in the heart of the City of London with over 100 famous courses to play.',
+            pricing: 'From £55/hour',
+            opening_hours: JSON.stringify({
+              'Monday': '06:00-22:00',
+              'Tuesday': '06:00-22:00',
+              'Wednesday': '06:00-22:00',
+              'Thursday': '06:00-22:00',
+              'Friday': '06:00-22:00',
+              'Saturday': '08:00-20:00',
+              'Sunday': '08:00-20:00'
+            })
+          },
+          {
+            id: '3',
+            name: 'Tee Box - Leadenhall',
+            slug: 'tee-box-leadenhall',
+            address: '117 Leadenhall Street',
+            city: 'London',
+            county: 'Greater London',
+            postcode: 'EC3A 3DE',
+            phone: '020 3951 9745',
+            email: 'leadenhall@tee-box.co.uk',
+            website: 'https://www.tee-box.co.uk/leadenhall',
+            latitude: 51.5133,
+            longitude: -0.0821,
+            simulator_brand: 'TrackMan 4',
+            num_simulators: 5,
+            simulator_features: 'TrackMan 4 simulators, premium location, coaching available',
+            description: 'Premium TrackMan 4 simulators in the City',
+            detailed_description: '5 TrackMan 4 simulators in a premium City location. Professional coaching available with detailed swing analysis and course play.',
+            pricing: '£60/hour non-members, £32/hour members',
+            opening_hours: JSON.stringify({
+              'Monday': '06:30-21:30',
+              'Tuesday': '06:30-21:30',
+              'Wednesday': '06:30-21:30',
+              'Thursday': '06:30-21:30',
+              'Friday': '06:30-21:30',
+              'Saturday': '08:00-20:00',
+              'Sunday': '08:00-20:00'
+            })
+          },
+          {
+            id: '4',
+            name: 'Tee Box - Canary Wharf',
+            slug: 'tee-box-canary-wharf',
+            address: '8 Churchill Place, Canary Wharf',
+            city: 'London',
+            county: 'Greater London',
+            postcode: 'E14 5HJ',
+            phone: '020 3858 9747',
+            email: 'canarywharf@tee-box.co.uk',
+            website: 'https://www.tee-box.co.uk/canary-wharf',
+            latitude: 51.5048,
+            longitude: -0.0182,
+            simulator_brand: 'TrackMan 4',
+            num_simulators: 6,
+            simulator_features: 'TrackMan 4 simulators, Canary Wharf location, membership options',
+            description: 'TrackMan 4 simulators in Canary Wharf financial district',
+            detailed_description: '6 TrackMan 4 simulators located in Canary Wharf. Perfect for professionals with flexible membership options and premium facilities.',
+            pricing: '£60/hour non-members, £32/hour members',
+            opening_hours: JSON.stringify({
+              'Monday': '06:30-21:30',
+              'Tuesday': '06:30-21:30',
+              'Wednesday': '06:30-21:30',
+              'Thursday': '06:30-21:30',
+              'Friday': '06:30-21:30',
+              'Saturday': '08:00-20:00',
+              'Sunday': '08:00-20:00'
+            })
+          },
+          {
+            id: '5',
+            name: 'Pitch Golf London',
+            slug: 'pitch-golf-london',
+            address: '1 Dorset Street',
+            city: 'London',
+            county: 'Greater London',
+            postcode: 'W1U 4EG',
+            phone: '0203 141 6069',
+            email: 'london@pitchgolf.com',
+            website: 'https://london.pitchgolf.com/',
+            latitude: 51.5187,
+            longitude: -0.1520,
+            simulator_brand: 'TrackMan & GCQuad',
+            num_simulators: 4,
+            simulator_features: 'TrackMan & GCQuad systems, social gaming, bar & restaurant',
+            description: 'Social golf experience with bar and restaurant',
+            detailed_description: '4 premium simulators with TrackMan & GCQuad technology. Features full bar, restaurant and social gaming environment in Central London.',
+            pricing: 'From £30-60/hour depending on time',
+            opening_hours: JSON.stringify({
+              'Monday': '12:00-23:00',
+              'Tuesday': '12:00-23:00',
+              'Wednesday': '12:00-23:00',
+              'Thursday': '12:00-23:00',
+              'Friday': '12:00-00:00',
+              'Saturday': '10:00-00:00',
+              'Sunday': '10:00-22:00'
+            })
+          },
+          {
+            id: '6',
+            name: 'Pitch Golf Bishopsgate',
+            slug: 'pitch-golf-bishopsgate',
+            address: '230 Bishopsgate',
+            city: 'London',
+            county: 'Greater London',
+            postcode: 'EC2M 4QD',
+            phone: '0203 141 6069',
+            email: 'bishopsgate@pitchgolf.com',
+            website: 'https://london.pitchgolf.com/bishopsgate',
+            latitude: 51.5207,
+            longitude: -0.0807,
+            simulator_brand: 'TrackMan & GCQuad',
+            num_simulators: 6,
+            simulator_features: 'TrackMan & GCQuad systems, corporate events, food & drink',
+            description: 'City location with corporate event facilities',
+            detailed_description: '6 premium simulators in the City. Perfect for corporate events with full catering and bar service available.',
+            pricing: 'From £30-60/hour depending on time',
+            opening_hours: JSON.stringify({
+              'Monday': '12:00-23:00',
+              'Tuesday': '12:00-23:00',
+              'Wednesday': '12:00-23:00',
+              'Thursday': '12:00-23:00',
+              'Friday': '12:00-00:00',
+              'Saturday': '10:00-00:00',
+              'Sunday': '10:00-22:00'
+            })
+          },
+          {
+            id: '7',
+            name: 'Pitch Golf Soho',
+            slug: 'pitch-golf-soho',
+            address: '15-16 Old Compton Street',
+            city: 'London',
+            county: 'Greater London',
+            postcode: 'W1D 5JE',
+            phone: '0203 141 6069',
+            email: 'soho@pitchgolf.com',
+            website: 'https://london.pitchgolf.com/soho',
+            latitude: 51.5132,
+            longitude: -0.1311,
+            simulator_brand: 'TrackMan & GCQuad',
+            num_simulators: 4,
+            simulator_features: 'TrackMan & GCQuad systems, Soho nightlife location, late opening',
+            description: 'Soho location with vibrant nightlife atmosphere',
+            detailed_description: '4 premium simulators in the heart of Soho. Perfect for combining golf with London nightlife, open until late.',
+            pricing: 'From £30-60/hour depending on time',
+            opening_hours: JSON.stringify({
+              'Monday': '12:00-23:00',
+              'Tuesday': '12:00-23:00',
+              'Wednesday': '12:00-23:00',
+              'Thursday': '12:00-23:00',
+              'Friday': '12:00-00:00',
+              'Saturday': '10:00-00:00',
+              'Sunday': '10:00-22:00'
+            })
+          },
+          {
+            id: '8',
+            name: 'Swing Golf Herne Hill',
+            slug: 'swing-golf-herne-hill',
+            address: '1A Half Moon Lane',
+            city: 'London',
+            county: 'Greater London',
+            postcode: 'SE24 9HU',
+            phone: '0208 678 9996',
+            email: 'info@swinggolf.co.uk',
+            website: 'https://www.swinggolf.co.uk/',
+            latitude: 51.4578,
+            longitude: -0.1030,
+            simulator_brand: 'TrackMan & AboutGolf',
+            num_simulators: 3,
+            simulator_features: 'TrackMan & AboutGolf simulators, lessons available, relaxed atmosphere',
+            description: 'South London simulator venue with coaching',
+            detailed_description: '3 simulators using TrackMan and AboutGolf technology. Offers professional coaching in a relaxed South London environment.',
+            pricing: 'Contact for pricing',
+            opening_hours: JSON.stringify({
+              'Monday': '10:00-21:00',
+              'Tuesday': '10:00-21:00',
+              'Wednesday': '10:00-21:00',
+              'Thursday': '10:00-21:00',
+              'Friday': '10:00-21:00',
+              'Saturday': '09:00-18:00',
+              'Sunday': '09:00-18:00'
+            })
+          },
+          {
+            id: '9',
+            name: 'The Golf Groove',
+            slug: 'the-golf-groove',
+            address: 'Unit 2, New Malden Trading Estate',
+            city: 'New Malden',
+            county: 'Surrey',
+            postcode: 'KT3 4AQ',
+            phone: '020 8336 3663',
+            email: 'info@thegolfgroove.com',
+            website: 'https://www.thegolfgroove.com/',
+            latitude: 51.3960,
+            longitude: -0.2590,
+            simulator_brand: 'TrackMan 4',
+            num_simulators: 2,
+            simulator_features: 'TrackMan 4 simulators, custom fitting, PGA coaching',
+            description: 'TrackMan 4 simulators with custom fitting services',
+            detailed_description: '2 TrackMan 4 simulators offering precise data and analysis. Specializes in custom fitting and PGA professional coaching.',
+            pricing: 'Contact for pricing',
+            opening_hours: JSON.stringify({
+              'Monday': '09:00-21:00',
+              'Tuesday': '09:00-21:00',
+              'Wednesday': '09:00-21:00',
+              'Thursday': '09:00-21:00',
+              'Friday': '09:00-21:00',
+              'Saturday': '09:00-17:00',
+              'Sunday': '10:00-16:00'
+            })
+          },
+          {
+            id: '10',
+            name: 'Grip Golf Academy',
+            slug: 'grip-golf-academy',
+            address: 'Arkley Golf Club, Rowley Green Road',
+            city: 'Arkley',
+            county: 'Hertfordshire',
+            postcode: 'EN5 3HL',
+            phone: '07584 566 234',
+            email: 'info@gripgolf.co.uk',
+            website: 'https://gripgolf.co.uk/',
+            latitude: 51.6458,
+            longitude: -0.2416,
+            simulator_brand: 'TrackMan 4',
+            num_simulators: 2,
+            simulator_features: 'TrackMan 4 technology, academy setting, professional instruction',
+            description: 'TrackMan 4 academy in North London golf club',
+            detailed_description: '2 TrackMan 4 simulators located at Arkley Golf Club. Offers professional instruction in a traditional golf club setting.',
+            pricing: 'Contact for pricing',
+            opening_hours: JSON.stringify({
+              'Monday': '09:00-21:00',
+              'Tuesday': '09:00-21:00',
+              'Wednesday': '09:00-21:00',
+              'Thursday': '09:00-21:00',
+              'Friday': '09:00-21:00',
+              'Saturday': '09:00-17:00',
+              'Sunday': '09:00-17:00'
+            })
+          },
+          {
+            id: '11',
+            name: 'World of Golf - Croydon',
+            slug: 'world-of-golf-croydon',
+            address: 'A232 Addington Road',
+            city: 'Croydon',
+            county: 'Surrey',
+            postcode: 'CR0 5AS',
+            phone: '020 8657 0285',
+            email: 'info@worldofgolf.co.uk',
+            website: 'https://www.worldofgolf.co.uk/',
+            latitude: 51.3673,
+            longitude: -0.0747,
+            simulator_brand: 'Multiple systems',
+            num_simulators: 4,
+            simulator_features: 'Multiple simulator systems, driving range, golf shop',
+            description: 'Large golf complex with multiple simulators',
+            detailed_description: '4 simulators using various technologies. Part of a comprehensive golf facility with driving range and professional shop.',
+            pricing: 'Contact for pricing',
+            opening_hours: JSON.stringify({
+              'Monday': '07:00-22:00',
+              'Tuesday': '07:00-22:00',
+              'Wednesday': '07:00-22:00',
+              'Thursday': '07:00-22:00',
+              'Friday': '07:00-22:00',
+              'Saturday': '07:00-21:00',
+              'Sunday': '07:00-21:00'
+            })
+          },
+          {
+            id: '12',
+            name: 'A1 Golf Range',
+            slug: 'a1-golf-range',
+            address: 'Rowley Lane',
+            city: 'Arkley',
+            county: 'Hertfordshire',
+            postcode: 'EN5 3HW',
+            phone: '0208 447 1411',
+            email: 'management@a1golf.co.uk',
+            website: 'https://www.a1golfrange.co.uk/indoor-golf-simulator/',
+            latitude: 51.6454,
+            longitude: -0.2394,
+            simulator_brand: 'Falcon Foresight',
+            num_simulators: 1,
+            simulator_features: 'Falcon Foresight technology, supports up to 4 players',
+            description: 'North London simulator with Foresight technology',
+            detailed_description: 'Industry-leading Falcon Foresight golf simulator in North London. Ultra-accurate ball and club data with virtual courses.',
+            pricing: '£45/hour (1hr), £75 (2hrs), £130 (4hr special)',
+            opening_hours: JSON.stringify({
+              'Monday': '09:00-22:00',
+              'Tuesday': '09:00-22:00',
+              'Wednesday': '09:00-22:00',
+              'Thursday': '09:00-22:00',
+              'Friday': '09:00-22:00',
+              'Saturday': '09:00-21:00',
+              'Sunday': '09:00-21:00'
+            })
+          },
+          {
+            id: '13',
+            name: 'North London Golf Academy',
+            slug: 'north-london-golf-academy',
+            address: 'David Lloyd Sudbury Hill, Greenford Road',
+            city: 'Greenford',
+            county: 'Middlesex',
+            postcode: 'UB6 0HX',
+            phone: '+44 7572 875 967',
+            email: 'nlgasudbury@gmail.com',
+            website: 'https://golflounge.co.uk/',
+            latitude: 51.5456,
+            longitude: -0.3156,
+            simulator_brand: 'TrackMan & GC Quad',
+            num_simulators: 3,
+            simulator_features: 'TrackMan and GC Quad simulators, 4K projectors, 150+ courses',
+            description: 'Premier indoor golf facility with advanced technology',
+            detailed_description: '3 simulator bays with TrackMan and GC Quad technology, 4K projectors. Over 150 courses including Ryder Cup and major championship venues.',
+            pricing: 'Contact for pricing',
+            opening_hours: JSON.stringify({
+              'Monday': '10:00-22:00',
+              'Tuesday': '10:00-22:00',
+              'Wednesday': '10:00-22:00',
+              'Thursday': '10:00-22:00',
+              'Friday': '10:00-22:00',
+              'Saturday': '10:00-22:00',
+              'Sunday': '10:00-22:00'
+            })
+          },
+          {
+            id: '14',
+            name: 'Club Fourteen',
+            slug: 'club-fourteen',
+            address: 'Simpson Way',
+            city: 'Long Ditton',
+            county: 'Surrey',
+            postcode: 'KT6 4ER',
+            phone: '0208 398 5423',
+            email: 'info@clubfourteen.co.uk',
+            website: 'https://clubfourteen.co.uk/',
+            latitude: 51.3945,
+            longitude: -0.3089,
+            simulator_brand: 'Advanced simulators',
+            simulator_features: 'PGA coaching, membership options, children\'s classes',
+            description: 'Advanced indoor golf studio for all skill levels',
+            detailed_description: 'State-of-the-art indoor golf studio with advanced simulators, PGA professionals and membership options suitable for all skill levels.',
+            pricing: 'Contact for pricing',
+            opening_hours: JSON.stringify({
+              'Monday': '10:00-22:00',
+              'Tuesday': '10:00-22:00',
+              'Wednesday': '10:00-22:00',
+              'Thursday': '10:00-22:00',
+              'Friday': '10:00-18:00',
+              'Saturday': '08:00-16:00',
+              'Sunday': 'Closed'
+            })
+          },
+          {
+            id: '15',
+            name: 'Tempo Golf Club',
+            slug: 'tempo-golf-club',
+            address: 'Unit 16, NW Works, 135 Salusbury Road',
+            city: 'London',
+            county: 'Greater London',
+            postcode: 'NW6 6RN',
+            phone: '0793-575 83 76',
+            website: 'https://www.tempogolf.co.uk/',
+            latitude: 51.5352,
+            longitude: -0.2056,
+            simulator_brand: 'TrackMan 4',
+            simulator_features: 'TrackMan 4 simulators, café & bar, social events, 180+ courses',
+            description: 'Indoor simulator golf club with café and bar',
+            detailed_description: 'TrackMan 4 simulators with café and bar in Queen\'s Park. Features 180+ global courses, social events and flexible memberships.',
+            pricing: 'Contact for pricing',
+            opening_hours: JSON.stringify({
+              'Monday': '10:00-22:00',
+              'Tuesday': '10:00-22:00',
+              'Wednesday': '10:00-22:00',
+              'Thursday': '10:00-22:00',
+              'Friday': '10:00-22:00',
+              'Saturday': '10:00-22:00',
+              'Sunday': '10:00-22:00'
+            })
+          }
+        ]
+
+        // Transform the data to add distances and other calculations
+        const transformedSimulators = londonSimulators.map((simulator) => {
+          let distance = 0
+          if (simulator.latitude && simulator.longitude) {
+            distance = Math.round(calculateDistance(
+              LONDON_CENTER.lat,
+              LONDON_CENTER.lng,
+              simulator.latitude,
+              simulator.longitude
+            ) * 10) / 10
+          }
+
+          return {
+            ...simulator,
+            distance
+          }
+        })
+
+        setSimulators(transformedSimulators)
+        setLoading(false)
+      } catch (error) {
+        console.error('Error loading London simulators:', error)
+        setLoading(false)
+      }
+    }
+
+    loadLondonSimulators()
+  }, [])
+
+  // Sorting and filtering
+  const filteredSimulators = simulators.filter(sim => !sim.distance || sim.distance <= maxDistance)
+
+  const sortedSimulators = [...filteredSimulators].sort((a, b) => {
+    switch (sortBy) {
+      case 'name':
+        return a.name.localeCompare(b.name)
+      case 'price':
+        const priceA = a.pricing ? parseFloat(a.pricing.replace(/[^0-9.]/g, '')) : 0
+        const priceB = b.pricing ? parseFloat(b.pricing.replace(/[^0-9.]/g, '')) : 0
+        return priceA - priceB
+      case 'bays':
+        return (b.num_simulators || 0) - (a.num_simulators || 0)
+      case 'distance':
+        return (a.distance || 999) - (b.distance || 999)
+      default:
+        return 0
+    }
+  })
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Header />
+        <main className="flex-grow flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+            <p className="mt-4 text-gray-600">Loading London golf simulators...</p>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    )
+  }
+
+  const hasSimulators = simulators.length > 0
+  const minPrice = hasSimulators ? Math.min(...simulators.map(s => s.pricing ? parseFloat(s.pricing.replace(/[^0-9.]/g, '')) : 0).filter(p => p > 0)) : 0
+  const maxBays = hasSimulators ? Math.max(...simulators.map(s => s.num_simulators || 0)) : 0
+
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Indoor Golf Simulators in London",
+    "description": "Complete directory of indoor golf simulators in London. Find TrackMan venues, pricing, and book online.",
+    "url": "https://findagolfrange.com/simulators/london",
+    "mainEntity": {
+      "@type": "ItemList",
+      "numberOfItems": simulators.length,
+      "itemListElement": simulators.map((simulator, index) => ({
+        "@type": "SportsActivityLocation",
+        "position": index + 1,
+        "name": simulator.name,
+        "description": simulator.description,
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": simulator.address,
+          "addressLocality": simulator.city,
+          "addressRegion": simulator.county,
+          "postalCode": simulator.postcode,
+          "addressCountry": "GB"
+        },
+        "geo": simulator.latitude && simulator.longitude ? {
+          "@type": "GeoCoordinates",
+          "latitude": simulator.latitude,
+          "longitude": simulator.longitude
+        } : undefined,
+        "telephone": simulator.phone,
+        "email": simulator.email,
+        "url": simulator.website,
+        "openingHours": simulator.opening_hours ? (() => {
+          try {
+            const hours = JSON.parse(simulator.opening_hours);
+            return Object.entries(hours).map(([day, time]) =>
+              `${day.substring(0,2)} ${time}`
+            );
+          } catch {
+            return undefined;
+          }
+        })() : undefined
+      }))
+    },
+    "breadcrumb": {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://findagolfrange.com"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Indoor Golf Simulators",
+          "item": "https://findagolfrange.com/simulators"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "London",
+          "item": "https://findagolfrange.com/simulators/london"
+        }
+      ]
+    },
+    "offers": {
+      "@type": "AggregateOffer",
+      "lowPrice": "30",
+      "highPrice": "120",
+      "priceCurrency": "GBP",
+      "offerCount": simulators.length
+    }
+  }
+
+  return (
+    <div className="min-h-screen flex flex-col">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
+      <Header />
+
+      <main className="flex-grow">
+        {/* Breadcrumbs */}
+        <section className="bg-gray-50 py-4">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <nav className="text-sm">
+              <ol className="flex items-center space-x-2">
+                <li><Link href="/" className="text-primary hover:text-blue-600">Home</Link></li>
+                <li className="text-gray-400">/</li>
+                <li><Link href="/simulators" className="text-primary hover:text-blue-600">Indoor Simulators</Link></li>
+                <li className="text-gray-400">/</li>
+                <li className="text-gray-700">London</li>
+              </ol>
+            </nav>
+          </div>
+        </section>
+
+        {/* Hero Section */}
+        <section className="bg-gradient-to-b from-blue-50 to-white py-12">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-8">
+              <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+                Best Indoor Golf Simulators in London
+              </h1>
+              <p className="text-xl text-gray-600 max-w-4xl mx-auto mb-6">
+                Discover the capital's finest indoor golf simulators for year-round practice. Compare TrackMan technology, prices, and locations across {simulators.length} premium simulator venues throughout London.
+              </p>
+              <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-700">
+                <span className="bg-white px-3 py-1 rounded-full shadow-sm">⚡ TrackMan Technology</span>
+                <span className="bg-white px-3 py-1 rounded-full shadow-sm">🌐 Virtual Courses</span>
+                <span className="bg-white px-3 py-1 rounded-full shadow-sm">🏢 City Center Locations</span>
+                <span className="bg-white px-3 py-1 rounded-full shadow-sm">📊 Swing Analysis</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Stats Section */}
+        {hasSimulators && (
+          <section className="py-8 bg-white border-b">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-center">
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <div className="text-2xl font-bold text-primary">{sortedSimulators.length}</div>
+                  <div className="text-sm text-gray-600">Indoor Simulators</div>
+                </div>
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <div className="text-2xl font-bold text-primary">
+                    £{minPrice > 0 ? minPrice.toFixed(2) : 'N/A'}
+                  </div>
+                  <div className="text-sm text-gray-600">From (cheapest)</div>
+                </div>
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <div className="text-2xl font-bold text-primary">
+                    {maxBays}
+                  </div>
+                  <div className="text-sm text-gray-600">Max Simulators</div>
+                </div>
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <div className="text-2xl font-bold text-primary">
+                    {simulators.filter(s => s.distance).length > 0 ?
+                      Math.min(...simulators.filter(s => s.distance).map(s => s.distance!)).toFixed(1) : 'N/A'}
+                  </div>
+                  <div className="text-sm text-gray-600">Closest (miles)</div>
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Simulators or Empty State */}
+        <section className="py-12">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            {hasSimulators ? (
+              <>
+                {/* Filters and Sort Controls */}
+                <div className="mb-8 space-y-4">
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <h2 className="text-3xl font-bold text-gray-900">
+                      All London Indoor Simulators
+                    </h2>
+                    <select
+                      value={sortBy}
+                      onChange={(e) => setSortBy(e.target.value as 'name' | 'price' | 'bays' | 'distance')}
+                      className="px-4 py-2 border border-gray-300 rounded-md bg-white text-sm"
+                    >
+                      <option value="distance">Sort by Distance (Closest)</option>
+                      <option value="name">Sort by Name (A-Z)</option>
+                      <option value="price">Sort by Price (Lowest)</option>
+                      <option value="bays">Sort by Simulators (Most)</option>
+                    </select>
+                  </div>
+
+                  {/* Distance Filter */}
+                  <div className="flex items-center gap-4 text-sm">
+                    <label className="text-gray-700">Max Distance:</label>
+                    <select
+                      value={maxDistance}
+                      onChange={(e) => setMaxDistance(Number(e.target.value))}
+                      className="px-3 py-1 border border-gray-300 rounded-md bg-white"
+                    >
+                      <option value={10}>Within 10 miles</option>
+                      <option value={25}>Within 25 miles</option>
+                      <option value={50}>Within 50 miles</option>
+                      <option value={999}>Show All</option>
+                    </select>
+                    <span className="text-gray-500">
+                      Showing {sortedSimulators.length} of {simulators.length} simulators
+                    </span>
+                  </div>
+                </div>
+
+                {/* Simulators Grid */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                  {sortedSimulators.map((simulator, index) => (
+                    <SimulatorCard key={simulator.id} simulator={simulator} index={index} />
+                  ))}
+                </div>
+              </>
+            ) : (
+              <div className="text-center py-12">
+                <p className="text-gray-600 text-lg">No indoor golf simulators found in London.</p>
+              </div>
+            )}
+          </div>
+        </section>
+
+        {/* Map Section */}
+        <section className="py-8 bg-gray-50">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-8">
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                London Indoor Golf Simulator Locations
+              </h2>
+              <p className="text-gray-600 max-w-2xl mx-auto">
+                Interactive map showing all {simulators.length} indoor golf simulator venues across London.
+              </p>
+            </div>
+            <div className="bg-white rounded-lg shadow-md p-6">
+              <OpenStreetMap
+                markers={simulators.map(sim => ({
+                  id: sim.id,
+                  name: sim.name,
+                  latitude: sim.latitude,
+                  longitude: sim.longitude,
+                  description: sim.description,
+                  link: `/simulators/london/${sim.slug}`
+                }))}
+                center={{ latitude: 51.5074, longitude: -0.1278 }}
+                zoom={10}
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* SEO Content Section */}
+        <section className="py-12 bg-white">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-4xl mx-auto">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-6">Indoor Golf Simulators in London: Complete Guide</h2>
+
+                  <h3 className="text-xl font-semibold text-gray-900 mb-4">Best TrackMan Golf Simulators London</h3>
+                  <p className="text-gray-700 mb-4">
+                    London boasts some of the UK's finest indoor golf simulator venues, featuring cutting-edge TrackMan 4 technology.
+                    From Urban Golf in Smithfield to Project Golf in Moorgate, the capital offers world-class virtual golf experiences
+                    for players of all abilities.
+                  </p>
+
+                  <h3 className="text-xl font-semibold text-gray-900 mb-4">Central London Golf Simulators</h3>
+                  <p className="text-gray-700 mb-4">
+                    The City of London and Central areas host premium simulator venues including Tee Box locations in Leadenhall Street
+                    and Canary Wharf, Pitch Golf venues in Soho and Bishopsgate, and Urban Golf's flagship Smithfield location.
+                    These venues cater to busy professionals seeking convenient golf practice during lunch breaks or after work.
+                  </p>
+
+                  <h3 className="text-xl font-semibold text-gray-900 mb-4">Golf Simulator Technology</h3>
+                  <p className="text-gray-700 mb-4">
+                    London's indoor golf venues feature the latest simulator technology including TrackMan 4, GCQuad, Foresight systems,
+                    and Golfzon simulators. These systems provide precise ball tracking, club data analysis, and access to famous
+                    courses worldwide including St. Andrews, Pebble Beach, and Augusta National.
+                  </p>
+                </div>
+
+                <div>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-4">Pricing Guide for London Golf Simulators</h3>
+                  <p className="text-gray-700 mb-4">
+                    Indoor golf simulator pricing in London typically ranges from £30-120 per hour depending on location, technology,
+                    and peak times. Budget-friendly options start at £30/hour at Pitch Golf venues, while premium experiences like
+                    Urban Golf's VIP room command £100-120/hour for exclusive curved screen setups.
+                  </p>
+
+                  <h3 className="text-xl font-semibold text-gray-900 mb-4">Greater London Simulator Venues</h3>
+                  <p className="text-gray-700 mb-4">
+                    Beyond Central London, excellent simulator venues operate across Greater London including The Golf Groove in New Malden,
+                    Grip Golf Academy in Arkley, North London Golf Academy in Greenford, and Club Fourteen in Long Ditton.
+                    These venues often offer competitive pricing and less crowded booking slots.
+                  </p>
+
+                  <h3 className="text-xl font-semibold text-gray-900 mb-4">Corporate Golf Events London</h3>
+                  <p className="text-gray-700 mb-4">
+                    Many London golf simulator venues cater to corporate events and team building activities. Pitch Golf locations
+                    excel in corporate hospitality with full bar service, while Urban Golf's private rooms accommodate exclusive
+                    business functions. These venues provide perfect alternatives to traditional golf days regardless of weather.
+                  </p>
+
+                  <h3 className="text-xl font-semibold text-gray-900 mb-4">Booking London Golf Simulators</h3>
+                  <p className="text-gray-700">
+                    Most London golf simulator venues offer online booking systems with flexible hourly rates. Peak times
+                    (weekday evenings and weekends) command premium pricing, while off-peak slots offer significant savings.
+                    Membership options at venues like Tee Box provide discounted rates for regular players.
+                  </p>
+                </div>
+              </div>
+
+              {/* FAQ Section */}
+              <div className="mt-12 pt-8 border-t border-gray-200">
+                <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">Frequently Asked Questions</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-2">How much do golf simulators cost in London?</h4>
+                    <p className="text-gray-700 mb-4">
+                      London golf simulator prices range from £30-120 per hour. Pitch Golf offers budget rates from £30-60/hour,
+                      while premium venues like Urban Golf's VIP room cost £100-120/hour.
+                    </p>
+
+                    <h4 className="font-semibold text-gray-900 mb-2">Which London golf simulators use TrackMan?</h4>
+                    <p className="text-gray-700 mb-4">
+                      TrackMan 4 technology is available at Project Golf Moorgate, Tee Box Leadenhall & Canary Wharf,
+                      Pitch Golf locations, The Golf Groove New Malden, Grip Golf Academy Arkley, and Tempo Golf Club Queen's Park.
+                    </p>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-2">Can I book golf simulators for corporate events?</h4>
+                    <p className="text-gray-700 mb-4">
+                      Yes, many London venues cater to corporate events. Pitch Golf Bishopsgate specializes in corporate bookings
+                      with catering, while Urban Golf offers exclusive VIP rooms for business entertainment.
+                    </p>
+
+                    <h4 className="font-semibold text-gray-900 mb-2">Are London golf simulators suitable for beginners?</h4>
+                    <p className="text-gray-700">
+                      Absolutely! Most venues welcome beginners and offer coaching services. Swing Golf Herne Hill and
+                      Club Fourteen specifically cater to all skill levels with professional instruction available.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <Footer />
+    </div>
+  )
+}
