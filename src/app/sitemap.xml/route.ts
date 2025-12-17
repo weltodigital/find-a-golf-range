@@ -14,14 +14,27 @@ export async function GET() {
       .select('name, city')
       .not('name', 'is', null)
 
-    if (citiesError || rangesError) {
-      console.error('Error fetching data:', citiesError || rangesError)
+    // Get all simulators with cities and individual venues
+    const { data: simulators, error: simulatorsError } = await supabase
+      .from('golf_ranges')
+      .select('name, city, slug')
+      .contains('special_features', ['Indoor Simulator'])
+      .not('name', 'is', null)
+      .not('city', 'is', null)
+
+    if (citiesError || rangesError || simulatorsError) {
+      console.error('Error fetching data:', citiesError || rangesError || simulatorsError)
       throw new Error('Failed to fetch data for sitemap')
     }
 
     // Get unique cities
     const uniqueCities = Array.from(
       new Set(cities?.map(item => item.city?.toLowerCase()) || [])
+    ).filter(Boolean)
+
+    // Get unique simulator cities
+    const uniqueSimulatorCities = Array.from(
+      new Set(simulators?.map(item => item.city?.toLowerCase().replace(/\s+/g, '-')) || [])
     ).filter(Boolean)
 
     const baseUrl = 'https://findagolfrange.com'
@@ -43,6 +56,12 @@ export async function GET() {
   </url>
   <url>
     <loc>${baseUrl}/simulators</loc>
+    <lastmod>${currentDate}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>${baseUrl}/simulators/uk</loc>
     <lastmod>${currentDate}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -71,14 +90,16 @@ export async function GET() {
   </url>`
     })
 
-    // Add simulator city pages (for now just London)
-    xml += `
+    // Add simulator city pages
+    uniqueSimulatorCities.forEach(city => {
+      xml += `
   <url>
-    <loc>${baseUrl}/simulators/london</loc>
+    <loc>${baseUrl}/simulators/uk/${city}</loc>
     <lastmod>${currentDate}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>`
+    })
 
     // Add individual range pages
     ranges?.forEach(range => {
@@ -95,6 +116,21 @@ export async function GET() {
         xml += `
   <url>
     <loc>${baseUrl}/uk/${cityName}/${rangeName}</loc>
+    <lastmod>${currentDate}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>`
+      }
+    })
+
+    // Add individual simulator venue pages
+    simulators?.forEach(simulator => {
+      if (simulator.name && simulator.city && simulator.slug) {
+        const citySlug = simulator.city.toLowerCase().replace(/\s+/g, '-')
+
+        xml += `
+  <url>
+    <loc>${baseUrl}/simulators/uk/${citySlug}/${simulator.slug}</loc>
     <lastmod>${currentDate}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
