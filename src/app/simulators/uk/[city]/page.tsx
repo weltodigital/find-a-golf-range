@@ -135,7 +135,6 @@ export default function SimulatorCityPage({ params }: PageProps) {
       liverpool: { latitude: 53.4072, longitude: -2.9917 },
       bristol: { latitude: 51.4538, longitude: -2.5973 },
       cardiff: { latitude: 51.4816, longitude: -3.1791 },
-      newcastle: { latitude: 54.9738, longitude: -1.6132 },
       leicester: { latitude: 52.6369, longitude: -1.1398 },
       nottingham: { latitude: 52.9548, longitude: -1.1581 },
       coventry: { latitude: 52.4068, longitude: -1.5197 },
@@ -187,6 +186,114 @@ export default function SimulatorCityPage({ params }: PageProps) {
       gloucester: { latitude: 51.8642, longitude: -2.2381 },
       colchester: { latitude: 51.8959, longitude: 0.8919 },
       chester: { latitude: 53.1906, longitude: -2.8906 },
+      tamworth: { latitude: 52.6336, longitude: -1.6910 },
+      // Additional cities from verification
+      andover: { latitude: 51.2081, longitude: -1.4957 },
+      arbroath: { latitude: 56.5599, longitude: -2.5912 },
+      ashtonunderlyne: { latitude: 53.4839, longitude: -2.0997 },
+      atherstone: { latitude: 52.5896, longitude: -1.5448 },
+      aylesbury: { latitude: 51.8153, longitude: -0.8084 },
+      ayr: { latitude: 55.4583, longitude: -4.6293 },
+      ballymoney: { latitude: 55.0746, longitude: -6.5147 },
+      barnsley: { latitude: 53.5534, longitude: -1.4821 },
+      basingstoke: { latitude: 51.2663, longitude: -1.0844 },
+      bath: { latitude: 51.3751, longitude: -2.3697 },
+      berkhamsted: { latitude: 51.7606, longitude: -0.5664 },
+      bideford: { latitude: 51.0175, longitude: -4.2026 },
+      billingham: { latitude: 54.6058, longitude: -1.2740 },
+      birkenhead: { latitude: 53.3930, longitude: -3.0175 },
+      blackwood: { latitude: 51.6695, longitude: -3.1906 },
+      boston: { latitude: 52.9763, longitude: -0.0264 },
+      bourneend: { latitude: 51.5732, longitude: -0.7071 },
+      bridgend: { latitude: 51.5042, longitude: -3.5769 },
+      bridgnorth: { latitude: 52.5365, longitude: -2.4175 },
+      brighouse: { latitude: 53.7025, longitude: -1.7787 },
+      bromsgrove: { latitude: 52.3357, longitude: -2.0619 },
+      bude: { latitude: 50.8270, longitude: -4.5443 },
+      buntingford: { latitude: 51.9449, longitude: -0.0132 },
+      burgesshill: { latitude: 50.9576, longitude: -0.1282 },
+      burnley: { latitude: 53.7896, longitude: -2.2448 },
+      bury: { latitude: 53.5933, longitude: -2.2958 },
+      burysaintedmunds: { latitude: 52.2467, longitude: 0.7056 },
+      cannock: { latitude: 52.6906, longitude: -2.0301 },
+      castleford: { latitude: 53.7255, longitude: -1.3540 },
+      chichester: { latitude: 50.8365, longitude: -0.7792 },
+      coatbridge: { latitude: 55.8619, longitude: -4.0176 },
+      colne: { latitude: 53.8565, longitude: -2.1659 },
+      conwy: { latitude: 53.2804, longitude: -3.8284 },
+      craigavon: { latitude: 54.4472, longitude: -6.3820 },
+      crymych: { latitude: 51.9780, longitude: -4.6416 },
+      cwmbran: { latitude: 51.6544, longitude: -3.0208 },
+      dalkeith: { latitude: 55.8925, longitude: -3.0671 },
+      dartmouth: { latitude: 50.3515, longitude: -3.5798 },
+      dewsbury: { latitude: 53.6906, longitude: -1.6338 },
+      diss: { latitude: 52.3775, longitude: 1.1151 },
+      dumfries: { latitude: 55.0711, longitude: -3.6051 },
+      dungannon: { latitude: 54.5024, longitude: -6.7673 },
+      durham: { latitude: 54.7761, longitude: -1.5733 },
+      eastgrinstead: { latitude: 51.1268, longitude: -0.0089 },
+      eastbourne: { latitude: 50.7684, longitude: 0.2903 },
+      exmouth: { latitude: 50.6197, longitude: -3.4148 },
+      falkirk: { latitude: 56.0018, longitude: -3.7839 },
+      fleetwood: { latitude: 53.9248, longitude: -3.0138 },
+      glastonbury: { latitude: 51.1459, longitude: -2.7142 },
+      godstone: { latitude: 51.2514, longitude: -0.0447 },
+      grimsby: { latitude: 53.5736, longitude: -0.0757 },
+      hailsham: { latitude: 50.8647, longitude: 0.2559 },
+      halifax: { latitude: 53.7218, longitude: -1.8618 },
+      harpenden: { latitude: 51.8153, longitude: -0.3533 },
+      hartlepool: { latitude: 54.6893, longitude: -1.2114 },
+      heanor: { latitude: 53.0140, longitude: -1.3544 },
+      hereford: { latitude: 52.0564, longitude: -2.7161 },
+      highbridge: { latitude: 51.2154, longitude: -2.9804 },
+      hinckley: { latitude: 52.5404, longitude: -1.3731 },
+      holywood: { latitude: 54.6312, longitude: -5.8308 },
+      inverkeithing: { latitude: 56.0293, longitude: -3.3928 },
+      kingslynn: { latitude: 52.7548, longitude: 0.4040 },
+      kingslangley: { latitude: 51.7137, longitude: -0.4408 },
+      kingsbridge: { latitude: 50.2840, longitude: -3.7766 },
+      largs: { latitude: 55.7922, longitude: -4.8694 },
+      leeonthesolent: { latitude: 50.8097, longitude: -1.2038 },
+      leightonbuzzard: { latitude: 51.9170, longitude: -0.6616 },
+      leominster: { latitude: 52.2251, longitude: -2.7304 },
+      letchworth: { latitude: 51.9781, longitude: -0.2280 },
+      leyland: { latitude: 53.6917, longitude: -2.6953 },
+      lincoln: { latitude: 53.2307, longitude: -0.5407 },
+      livingston: { latitude: 55.8864, longitude: -3.5230 },
+      loanhead: { latitude: 55.8736, longitude: -3.1611 },
+      londonderry: { latitude: 54.9966, longitude: -7.3086 },
+      maidenhead: { latitude: 51.5218, longitude: -0.7181 },
+      maryport: { latitude: 54.7138, longitude: -3.4954 },
+      miltonkeynes: { latitude: 52.0406, longitude: -0.7594 },
+      nelson: { latitude: 53.8349, longitude: -2.2167 },
+      newmalden: { latitude: 51.4025, longitude: -0.2558 },
+      newark: { latitude: 53.0679, longitude: -0.8050 },
+      newbury: { latitude: 51.4014, longitude: -1.3231 },
+      newcastle: { latitude: 54.1810, longitude: -5.8906 },
+      newcastleupontyne: { latitude: 54.9738, longitude: -1.6132 },
+      newry: { latitude: 54.1751, longitude: -6.3402 },
+      newtonabbot: { latitude: 50.5301, longitude: -3.6067 },
+      newtonaycliffe: { latitude: 54.6154, longitude: -1.5757 },
+      newtownards: { latitude: 54.5913, longitude: -5.6933 },
+      northampton: { latitude: 52.2405, longitude: -0.9027 },
+      oban: { latitude: 56.4129, longitude: -5.4711 },
+      omagh: { latitude: 54.6011, longitude: -7.3078 },
+      penarth: { latitude: 51.4368, longitude: -3.1693 },
+      peterhead: { latitude: 57.5087, longitude: -1.7844 },
+      poole: { latitude: 50.7150, longitude: -1.9872 },
+      poultonlefylde: { latitude: 53.8470, longitude: -2.9930 },
+      radlett: { latitude: 51.6850, longitude: -0.2736 },
+      ramsgate: { latitude: 51.3356, longitude: 1.4172 },
+      redditch: { latitude: 52.3063, longitude: -1.9367 },
+      rhyl: { latitude: 53.3200, longitude: -3.4896 },
+      ringwood: { latitude: 50.8415, longitude: -1.7792 },
+      rochester: { latitude: 51.3882, longitude: 0.5040 },
+      royston: { latitude: 52.0480, longitude: -0.0257 },
+      rushden: { latitude: 52.2894, longitude: -0.6063 },
+      sainthelens: { latitude: 53.4500, longitude: -2.7374 },
+      southendonSea: { latitude: 51.5459, longitude: 0.7077 },
+      stevenage: { latitude: 51.9020, longitude: -0.2023 },
+      stirling: { latitude: 56.1165, longitude: -3.9369 },
       // London Boroughs
       barnet: { latitude: 51.6252, longitude: -0.1517 },
       croydon: { latitude: 51.3762, longitude: -0.0982 },
@@ -224,12 +331,9 @@ export default function SimulatorCityPage({ params }: PageProps) {
       cheshunt: { latitude: 51.7020, longitude: -0.0369 },
       hertford: { latitude: 51.7963, longitude: -0.0781 },
       welwyn: { latitude: 51.8279, longitude: -0.2019 },
-      stevenage: { latitude: 51.9020, longitude: -0.2023 },
       hitchin: { latitude: 51.9490, longitude: -0.2806 },
-      letchworth: { latitude: 51.9781, longitude: -0.2280 },
       bishops: { latitude: 51.8648, longitude: 0.2184 }, // Bishops Stortford
       high: { latitude: 51.7552, longitude: -0.0449 }, // High Wycombe
-      maidenhead: { latitude: 51.5218, longitude: -0.7181 },
       slough: { latitude: 51.5105, longitude: -0.5950 },
       windsor: { latitude: 51.4816, longitude: -0.6044 },
       bracknell: { latitude: 51.4164, longitude: -0.7536 },
@@ -246,22 +350,39 @@ export default function SimulatorCityPage({ params }: PageProps) {
       folkestone: { latitude: 51.0814, longitude: 1.1696 },
       dover: { latitude: 51.1279, longitude: 1.3134 },
       margate: { latitude: 51.3813, longitude: 1.3862 },
-      ramsgate: { latitude: 51.3356, longitude: 1.4172 },
       // More cities can be added as needed
     }
 
     const normalized = city.toLowerCase()
 
-    // Handle special cases
-    if (normalized.includes('milton keynes')) return cityCoords['milton']
+    // Handle special cases first
+    if (normalized.includes('milton keynes')) return cityCoords['miltonkeynes']
     if (normalized.includes('waltham forest')) return cityCoords['waltham']
     if (normalized.includes('bishops stortford')) return cityCoords['bishops']
     if (normalized.includes('high wycombe')) return cityCoords['high']
-    if (normalized.includes('east grinstead')) return cityCoords['east']
+    if (normalized.includes('east grinstead')) return cityCoords['eastgrinstead']
     if (normalized.includes('st austell')) return cityCoords['st']
     if (normalized.includes('tunbridge wells')) return cityCoords['tunbridge']
+    if (normalized.includes('southend on sea')) return cityCoords['southendonSea']
+    if (normalized.includes('lee on the solent')) return cityCoords['leeonthesolent']
+    if (normalized.includes('ashton under lyne')) return cityCoords['ashtonunderlyne']
+    if (normalized.includes('bourne end')) return cityCoords['bourneend']
+    if (normalized.includes('burgess hill')) return cityCoords['burgesshill']
+    if (normalized.includes('bury saint edmunds')) return cityCoords['burysaintedmunds']
+    if (normalized.includes('newcastle upon tyne')) return cityCoords['newcastleupontyne']
+    if (normalized.includes('poulton le fylde')) return cityCoords['poultonlefylde']
+    if (normalized.includes('saint helens')) return cityCoords['sainthelens']
+    if (normalized.includes('kings lynn')) return cityCoords['kingslynn']
+    if (normalized.includes('kings langley')) return cityCoords['kingslangley']
+    if (normalized.includes('new malden')) return cityCoords['newmalden']
+    if (normalized.includes('newton abbot')) return cityCoords['newtonabbot']
+    if (normalized.includes('newton aycliffe')) return cityCoords['newtonaycliffe']
+    if (normalized.includes('leighton buzzard')) return cityCoords['leightonbuzzard']
 
-    return cityCoords[normalized] || { latitude: 51.5074, longitude: -0.1278 } // Default to London if not found
+    // Remove spaces and special characters for direct lookup
+    const simpleNormalized = normalized.replace(/[\s\-']/g, '').toLowerCase()
+
+    return cityCoords[simpleNormalized] || cityCoords[normalized] || { latitude: 51.5074, longitude: -0.1278 } // Default to London if not found
   }
 
   useEffect(() => {
