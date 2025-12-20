@@ -360,6 +360,7 @@ export default function SimulatorCityPage({ params }: PageProps) {
       totnes: { latitude: 50.4306, longitude: -3.6858 },
       westbury: { latitude: 51.2607, longitude: -2.1889 },
       weymouth: { latitude: 50.6133, longitude: -2.4558 },
+      shrewsbury: { latitude: 52.7069, longitude: -2.7535 },
       // More cities can be added as needed
     }
 
