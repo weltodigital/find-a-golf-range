@@ -365,6 +365,7 @@ export default function SimulatorCityPage({ params }: PageProps) {
       stone: { latitude: 52.9026, longitude: -2.1569 },
       stratforduponavon: { latitude: 52.1919, longitude: -1.7080 },
       telford: { latitude: 52.6769, longitude: -2.4447 },
+      warminster: { latitude: 51.2043, longitude: -2.1787 },
       // More cities can be added as needed
     }
 
