@@ -363,6 +363,8 @@ export default function SimulatorCityPage({ params }: PageProps) {
       shrewsbury: { latitude: 52.7069, longitude: -2.7535 },
       stafford: { latitude: 52.8067, longitude: -2.1158 },
       stone: { latitude: 52.9026, longitude: -2.1569 },
+      stratforduponavon: { latitude: 52.1919, longitude: -1.7080 },
+      telford: { latitude: 52.6769, longitude: -2.4447 },
       // More cities can be added as needed
     }
 
@@ -393,6 +395,7 @@ export default function SimulatorCityPage({ params }: PageProps) {
     if (normalized.includes('leighton buzzard')) return cityCoords['leightonbuzzard']
     if (normalized.includes('waltham cross')) return cityCoords['walthamcross']
     if (normalized.includes('stoke on trent')) return cityCoords['stoke']
+    if (normalized.includes('stratford upon avon')) return cityCoords['stratforduponavon']
 
     // Remove spaces and special characters for direct lookup
     const simpleNormalized = normalized.replace(/[\s\-']/g, '').toLowerCase()
