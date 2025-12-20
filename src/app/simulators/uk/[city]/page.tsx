@@ -357,6 +357,8 @@ export default function SimulatorCityPage({ params }: PageProps) {
       sandown: { latitude: 50.6519, longitude: -1.1581 },
       tring: { latitude: 51.7936, longitude: -0.6610 },
       westerham: { latitude: 51.2656, longitude: 0.0752 },
+      totnes: { latitude: 50.4306, longitude: -3.6858 },
+      westbury: { latitude: 51.2607, longitude: -2.1889 },
       // More cities can be added as needed
     }
 
