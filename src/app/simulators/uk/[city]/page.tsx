@@ -350,6 +350,10 @@ export default function SimulatorCityPage({ params }: PageProps) {
       folkestone: { latitude: 51.0814, longitude: 1.1696 },
       dover: { latitude: 51.1279, longitude: 1.3134 },
       margate: { latitude: 51.3813, longitude: 1.3862 },
+      // Additional missing cities
+      abingdon: { latitude: 51.6721, longitude: -1.2833 },
+      bridgeworks: { latitude: 51.8261, longitude: 0.1889 },
+      walthamcross: { latitude: 51.6869, longitude: -0.0333 },
       // More cities can be added as needed
     }
 
@@ -378,6 +382,7 @@ export default function SimulatorCityPage({ params }: PageProps) {
     if (normalized.includes('newton abbot')) return cityCoords['newtonabbot']
     if (normalized.includes('newton aycliffe')) return cityCoords['newtonaycliffe']
     if (normalized.includes('leighton buzzard')) return cityCoords['leightonbuzzard']
+    if (normalized.includes('waltham cross')) return cityCoords['walthamcross']
 
     // Remove spaces and special characters for direct lookup
     const simpleNormalized = normalized.replace(/[\s\-']/g, '').toLowerCase()
