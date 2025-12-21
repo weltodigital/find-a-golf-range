@@ -374,6 +374,7 @@ export default function SimulatorCityPage({ params }: PageProps) {
       skipton: { latitude: 53.9635, longitude: -2.0177 },
       warrington: { latitude: 53.3900, longitude: -2.5970 },
       wirral: { latitude: 53.3727, longitude: -3.0738 },
+      scarborough: { latitude: 54.2797, longitude: -0.3986 },
       // More cities can be added as needed
     }
 
