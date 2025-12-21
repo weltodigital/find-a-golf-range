@@ -377,6 +377,8 @@ export default function SimulatorCityPage({ params }: PageProps) {
       scarborough: { latitude: 54.2797, longitude: -0.3986 },
       washington: { latitude: 54.8998, longitude: -1.5197 },
       wakefield: { latitude: 53.6833, longitude: -1.4975 },
+      standrews: { latitude: 56.3398, longitude: -2.7967 },
+      stevenston: { latitude: 55.6426, longitude: -4.7516 },
       // More cities can be added as needed
     }
 
@@ -409,6 +411,7 @@ export default function SimulatorCityPage({ params }: PageProps) {
     if (normalized.includes('stoke on trent')) return cityCoords['stoke']
     if (normalized.includes('stratford upon avon')) return cityCoords['stratforduponavon']
     if (normalized.includes('letchworth garden city')) return cityCoords['letchworth']
+    if (normalized.includes('st andrews')) return cityCoords['standrews']
 
     // Remove spaces and special characters for direct lookup
     const simpleNormalized = normalized.replace(/[\s\-']/g, '').toLowerCase()
