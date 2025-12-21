@@ -369,6 +369,8 @@ export default function SimulatorCityPage({ params }: PageProps) {
       stowmarket: { latitude: 52.1889, longitude: 0.9953 },
       wymondham: { latitude: 52.5696, longitude: 1.1176 },
       altrincham: { latitude: 53.3874, longitude: -2.3523 },
+      settle: { latitude: 54.0689, longitude: -2.2844 },
+      skelmersdale: { latitude: 53.5510, longitude: -2.7707 },
       // More cities can be added as needed
     }
 
