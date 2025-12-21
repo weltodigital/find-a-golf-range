@@ -413,12 +413,43 @@ export default function SimulatorCityPage({ params }: PageProps) {
         const cityCenter = getCityCoordinates(cityName)
 
         // Query golf_ranges table for simulators in this city
-        const { data: simulatorData, error } = await supabase
+        let simulatorData, error;
+
+        // Try the exact city name first
+        const result1 = await supabase
           .from('golf_ranges')
           .select('*')
           .eq('city', cityName)
           .contains('special_features', ['Indoor Simulator'])
           .order('name')
+
+        simulatorData = result1.data;
+        error = result1.error;
+
+        // If no results and the city name could have apostrophes, try with apostrophes
+        if ((!simulatorData || simulatorData.length === 0) && !error) {
+          // Handle common apostrophe cases
+          let apostropheVariation = null;
+          if (cityName === 'Kings Lynn') {
+            apostropheVariation = "King's Lynn";
+          }
+          // Add more apostrophe cases here if needed in the future
+
+          if (apostropheVariation) {
+            console.log(`Trying apostrophe variation: "${apostropheVariation}"`);
+            const result2 = await supabase
+              .from('golf_ranges')
+              .select('*')
+              .eq('city', apostropheVariation)
+              .contains('special_features', ['Indoor Simulator'])
+              .order('name')
+
+            if (result2.data && result2.data.length > 0) {
+              simulatorData = result2.data;
+              error = result2.error;
+            }
+          }
+        }
 
         if (error) {
           console.error('Error fetching simulators:', error)
