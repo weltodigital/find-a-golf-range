@@ -376,6 +376,7 @@ export default function SimulatorCityPage({ params }: PageProps) {
       wirral: { latitude: 53.3727, longitude: -3.0738 },
       scarborough: { latitude: 54.2797, longitude: -0.3986 },
       washington: { latitude: 54.8998, longitude: -1.5197 },
+      wakefield: { latitude: 53.6833, longitude: -1.4975 },
       // More cities can be added as needed
     }
 
