@@ -366,6 +366,9 @@ export default function SimulatorCityPage({ params }: PageProps) {
       stratforduponavon: { latitude: 52.1919, longitude: -1.7080 },
       telford: { latitude: 52.6769, longitude: -2.4447 },
       warminster: { latitude: 51.2043, longitude: -2.1787 },
+      stowmarket: { latitude: 52.1889, longitude: 0.9953 },
+      wymondham: { latitude: 52.5696, longitude: 1.1176 },
+      altrincham: { latitude: 53.3874, longitude: -2.3523 },
       // More cities can be added as needed
     }
 
@@ -397,6 +400,7 @@ export default function SimulatorCityPage({ params }: PageProps) {
     if (normalized.includes('waltham cross')) return cityCoords['walthamcross']
     if (normalized.includes('stoke on trent')) return cityCoords['stoke']
     if (normalized.includes('stratford upon avon')) return cityCoords['stratforduponavon']
+    if (normalized.includes('letchworth garden city')) return cityCoords['letchworth']
 
     // Remove spaces and special characters for direct lookup
     const simpleNormalized = normalized.replace(/[\s\-']/g, '').toLowerCase()
@@ -432,6 +436,8 @@ export default function SimulatorCityPage({ params }: PageProps) {
           let apostropheVariation = null;
           if (cityName === 'Kings Lynn') {
             apostropheVariation = "King's Lynn";
+          } else if (cityName === 'Letchworth Garden City') {
+            apostropheVariation = 'Letchworth';
           }
           // Add more apostrophe cases here if needed in the future
 
