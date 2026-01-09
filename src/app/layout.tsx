@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import ClientWrapper from '@/components/ClientWrapper'
 
 export const metadata: Metadata = {
   title: 'Find A Golf Range - UK Golf Driving Range Directory',
@@ -21,7 +22,11 @@ export default function RootLayout({
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9111708018377400"
              crossOrigin="anonymous"></script>
       </head>
-      <body>{children}</body>
+      <body>
+        <ClientWrapper>
+          {children}
+        </ClientWrapper>
+      </body>
     </html>
   )
 }
