@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 
-const POPUP_DELAY = 30000 // 30 seconds
+const POPUP_DELAY = 8000 // 8 seconds
 const POPUP_STORAGE_KEY = 'newsletter_popup_shown'
 const POPUP_DISMISSED_KEY = 'newsletter_popup_dismissed'
 
