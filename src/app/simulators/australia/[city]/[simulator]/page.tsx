@@ -123,7 +123,6 @@ const getCityCoordinates = (city: string): [number, number] => {
     bordertown: { latitude: -36.3119, longitude: 140.7636 },
     millicent: { latitude: -37.5978, longitude: 140.3481 },
     naracoorte: { latitude: -36.9581, longitude: 140.7378 },
-    bordertown: { latitude: -36.3119, longitude: 140.7636 },
     kingscote: { latitude: -35.6544, longitude: 137.6394 },
     bridport: { latitude: -41.0064, longitude: 147.3878 },
     scottsdale: { latitude: -41.1606, longitude: 147.5181 },
