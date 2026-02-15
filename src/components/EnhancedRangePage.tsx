@@ -199,19 +199,30 @@ export default function EnhancedRangePage({ slug, cityName, cityPath, cityCenter
                 <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 lg:mb-0">
                   {range.name}
                 </h1>
-                {range.slug === 'portsmouth-golf-centre' && (
-                  <a
-                    href="https://www.rangestatus.com/r/portsmouth-golf-centre"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors whitespace-nowrap"
-                  >
-                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                    </svg>
-                    Check How Busy This Range Is
-                  </a>
-                )}
+                {(() => {
+                  const rangeStatusUrls = {
+                    'portsmouth-golf-centre': 'https://www.rangestatus.com/r/portsmouth-golf-centre',
+                    'world-of-golf-london': 'https://www.rangestatus.com/r/world-of-golf-london',
+                    'west-london-golf-centre': 'https://www.rangestatus.com/r/west-london-golf-centre',
+                    'hadden-hill-golf-club': 'https://www.rangestatus.com/r/hadden-hill-golf-club'
+                  };
+
+                  const rangeStatusUrl = rangeStatusUrls[range.slug as keyof typeof rangeStatusUrls];
+
+                  return rangeStatusUrl ? (
+                    <a
+                      href={rangeStatusUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors whitespace-nowrap"
+                    >
+                      <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                      </svg>
+                      Check How Busy This Range Is
+                    </a>
+                  ) : null;
+                })()}
               </div>
               <p className="text-xl text-gray-600 mb-6">
                 {range.description}
