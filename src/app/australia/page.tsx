@@ -5,8 +5,8 @@ import Footer from '@/components/Footer'
 import { supabase } from '@/lib/supabase'
 
 export const metadata: Metadata = {
-  title: 'Australia Golf Driving Ranges - Find Practice Facilities Across Australia',
-  description: 'Discover the best golf driving ranges across Australia. Browse practice facilities in Sydney, Newcastle, and major cities with detailed information and locations.',
+  title: 'Australia Golf Facilities - Driving Ranges & Indoor Simulators Across Australia',
+  description: 'Discover the best golf facilities across Australia - driving ranges and indoor simulators in Sydney, Melbourne, Brisbane, Perth and more. Find practice facilities near you.',
   openGraph: {
     title: 'Australia Golf Driving Ranges Directory',
     description: 'Find the perfect golf practice facility anywhere in Australia. Comprehensive directory of driving ranges across the country.',
@@ -19,14 +19,21 @@ export const metadata: Metadata = {
 async function getAustralianStatistics() {
   const { data, error } = await supabase
     .from('golf_ranges')
-    .select('city, county, num_bays')
-    .lt('latitude', 0)  // Only Australian ranges (negative latitude)
+    .select('city, county, num_bays, special_features')
+    .contains('special_features', ['australia'])
 
   if (error || !data) {
-    return { totalRanges: 0, totalCities: 0, totalBays: 0, citiesData: [] }
+    return { totalRanges: 0, totalSimulators: 0, totalCities: 0, totalBays: 0, citiesData: [] }
   }
 
-  const totalRanges = data.length
+  const totalRanges = data.filter(venue =>
+    venue.special_features?.includes('driving range')
+  ).length
+
+  const totalSimulators = data.filter(venue =>
+    venue.special_features?.includes('indoor simulators')
+  ).length
+
   const citySet = new Set(data.map(range => range.city))
   const cities = Array.from(citySet)
   const totalCities = cities.length
@@ -36,10 +43,16 @@ async function getAustralianStatistics() {
   const cityCounts = cities.map(city => ({
     city,
     county: data.find(range => range.city === city)?.county || '',
-    count: data.filter(range => range.city === city).length
+    count: data.filter(range => range.city === city).length,
+    rangeCount: data.filter(range =>
+      range.city === city && range.special_features?.includes('driving range')
+    ).length,
+    simulatorCount: data.filter(range =>
+      range.city === city && range.special_features?.includes('indoor simulators')
+    ).length
   })).sort((a, b) => b.count - a.count)
 
-  return { totalRanges, totalCities, totalBays, citiesData: cityCounts }
+  return { totalRanges, totalSimulators, totalCities, totalBays, citiesData: cityCounts }
 }
 
 function slugify(text: string): string {
@@ -47,33 +60,51 @@ function slugify(text: string): string {
 }
 
 export default async function AustraliaPage() {
-  const { totalRanges, totalCities, totalBays, citiesData } = await getAustralianStatistics()
+  const { totalRanges, totalSimulators, totalCities, totalBays, citiesData } = await getAustralianStatistics()
 
-  // Valid cities that have both data AND location pages
-  const validCities = [
-    'Sydney',
-    'Newcastle'
-  ]
+  // Filter citiesData to only include cities with actual data
+  const validCitiesData = citiesData.filter(c => c.count > 0)
 
-  // Filter citiesData to only include valid cities (those with both data and pages)
-  const validCitiesData = citiesData.filter(c => validCities.includes(c.city))
-
-  // Add cities that have pages but no data
-  const citiesWithPagesButNoData = ['Sydney', 'Newcastle']
-  citiesWithPagesButNoData.forEach(cityName => {
-    if (!validCitiesData.find(c => c.city === cityName)) {
-      validCitiesData.push({
-        city: cityName,
-        county: 'New South Wales',
-        count: 0
-      })
-    }
-  })
-
-  // Group cities by state for better organization
+  // Group cities by state/region for better organization
   const stateGroups = {
     'New South Wales': validCitiesData.filter(c =>
-      ['Sydney', 'Newcastle'].includes(c.city)
+      c.city === 'Sydney' || c.city === 'Newcastle–Maitland' || c.city === 'Wollongong' ||
+      c.city.startsWith('Regional NSW') ||
+      ['Bathurst', 'Orange', 'Dubbo', 'Tamworth', 'Armidale', 'Abercrombie', 'Central Coast', 'Penrith', 'Nowra', 'Forster-Tuncurry', 'Port Macquarie', 'Ballina', 'Lismore', 'Cootamundra', 'Hunter Valley', 'Blue Mountains', 'Illawarra', 'Southern Highlands', 'Wagga Wagga', 'Byron Bay', 'Coffs Harbour'].includes(c.city)
+    ),
+    'Australian Capital Territory': validCitiesData.filter(c =>
+      c.city === 'Canberra' || c.city.startsWith('Regional ACT')
+    ),
+    'Victoria': validCitiesData.filter(c =>
+      c.city === 'Melbourne' || c.city === 'Geelong' || c.city === 'Ballarat' || c.city === 'Bendigo' ||
+      c.city.startsWith('Regional VIC') || c.city.startsWith('Regional Victoria') ||
+      ['Warrnambool', 'Traralgon', 'Shepparton', 'Morwell', 'Moe', 'Warragul', 'Mornington Peninsula', 'Mildura'].includes(c.city)
+    ),
+    'Queensland': validCitiesData.filter(c =>
+      c.city === 'Brisbane' || c.city === 'Gold Coast' || c.city === 'Sunshine Coast' ||
+      c.city === 'Cairns' || c.city === 'Townsville' || c.city === 'Toowoomba' || c.city === 'Rockhampton' || c.city === 'Mackay' ||
+      c.city.startsWith('Regional QLD') || c.city.startsWith('Regional Queensland') ||
+      ['Hervey Bay', 'Fraser Coast'].includes(c.city)
+    ),
+    'Western Australia': validCitiesData.filter(c =>
+      c.city === 'Perth' || c.city === 'Bunbury' ||
+      c.city.startsWith('Regional WA') ||
+      ['Denmark', 'Karratha'].includes(c.city)
+    ),
+    'South Australia': validCitiesData.filter(c =>
+      c.city === 'Adelaide' ||
+      c.city.startsWith('Regional SA')
+    ),
+    'Tasmania': validCitiesData.filter(c =>
+      c.city === 'Hobart' || c.city === 'Launceston' ||
+      c.city.startsWith('Regional TAS')
+    ),
+    'Northern Territory': validCitiesData.filter(c =>
+      c.city === 'Darwin' ||
+      c.city.startsWith('Regional NT')
+    ),
+    'Cross-Border': validCitiesData.filter(c =>
+      c.city === 'Albury–Wodonga'
     )
   }
 
@@ -100,16 +131,20 @@ export default async function AustraliaPage() {
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-4xl mx-auto text-center">
               <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
-                🇦🇺 Australia Golf Driving Ranges
+                🇦🇺 Australia Golf Facilities
               </h1>
               <p className="text-xl text-gray-600 mb-8">
-                Discover {totalRanges} premium golf practice facilities across {totalCities} cities
-                in Australia. From Sydney's metropolitan ranges to Newcastle's quality facilities, find the perfect driving range near you.
+                Discover {totalRanges + totalSimulators} premium golf facilities across {totalCities} cities
+                in Australia. From driving ranges to indoor simulators in Sydney, Melbourne, Brisbane, Perth and beyond.
               </p>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                 <div className="bg-white p-6 rounded-lg shadow-md">
                   <div className="text-3xl font-bold text-primary mb-2">{totalRanges}</div>
-                  <div className="text-gray-600">Golf Driving Ranges</div>
+                  <div className="text-gray-600">Driving Ranges</div>
+                </div>
+                <div className="bg-white p-6 rounded-lg shadow-md">
+                  <div className="text-3xl font-bold text-primary mb-2">{totalSimulators}</div>
+                  <div className="text-gray-600">Indoor Simulators</div>
                 </div>
                 <div className="bg-white p-6 rounded-lg shadow-md">
                   <div className="text-3xl font-bold text-primary mb-2">{totalCities}</div>
@@ -139,7 +174,7 @@ export default async function AustraliaPage() {
                   <div key={state} className="mb-12">
                     <h3 className="text-2xl font-semibold text-gray-900 mb-6">{state}</h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                      {cities.map(({ city, county, count }) => (
+                      {cities.map(({ city, county, count, rangeCount, simulatorCount }) => (
                         <Link
                           key={city}
                           href={`/australia/${slugify(city)}`}
@@ -149,9 +184,26 @@ export default async function AustraliaPage() {
                             {city}
                           </h4>
                           <p className="text-gray-600 mb-3">{county}</p>
+                          <div className="space-y-2 mb-4">
+                            {rangeCount > 0 && (
+                              <div className="text-sm text-gray-700">
+                                {rangeCount} driving range{rangeCount !== 1 ? 's' : ''}
+                              </div>
+                            )}
+                            {simulatorCount > 0 && (
+                              <div className="text-sm text-gray-700">
+                                {simulatorCount} indoor simulator{simulatorCount !== 1 ? 's' : ''}
+                              </div>
+                            )}
+                            {count === 0 && (
+                              <div className="text-sm text-gray-500">
+                                Coming soon
+                              </div>
+                            )}
+                          </div>
                           <div className="flex items-center justify-between">
                             <span className="text-primary font-medium">
-                              {count} driving range{count !== 1 ? 's' : ''}
+                              {count > 0 ? `${count} total facilities` : 'View details'}
                             </span>
                             <span className="text-primary group-hover:translate-x-1 transition-transform">
                               →

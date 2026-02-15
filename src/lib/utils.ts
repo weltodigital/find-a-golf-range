@@ -21,6 +21,20 @@ export function calculateDistanceKm(lat1: number, lng1: number, lat2: number, ln
 }
 
 // Convert city names to URL slugs for Australian cities
+// Filter function to exclude indoor simulators from driving range listings
+export function filterOutIndoorSimulators(rangeData: any[]): any[] {
+  return rangeData.filter((range: any) => {
+    // Check if this is an indoor simulator
+    const isIndoorSimulator =
+      range.facilities?.includes('Indoor Simulator') ||
+      range.special_features?.includes('Indoor Simulator') ||
+      range.description?.toLowerCase().includes('indoor simulator') ||
+      range.name?.toLowerCase().includes('simulator')
+
+    return !isIndoorSimulator
+  })
+}
+
 export function getCitySlugFromName(cityName: string): string {
   // Handle special cases for Australian cities
   switch (cityName.toLowerCase()) {

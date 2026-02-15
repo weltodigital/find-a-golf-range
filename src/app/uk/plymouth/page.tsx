@@ -5,6 +5,7 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import RangeCard from '@/components/RangeCard'
 import { GolfRange } from '@/types'
+import { filterOutIndoorSimulators } from '@/lib/utils'
 import { createClient } from '@supabase/supabase-js'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
@@ -59,8 +60,11 @@ export default function PlymouthPage() {
           return
         }
 
+        // Filter out indoor simulators (they should only appear on simulator pages)
+        const filteredRangeData = filterOutIndoorSimulators(rangeData)
+
         // Transform the database data to match our GolfRange type
-        const transformedRanges: GolfRange[] = rangeData.map((range: any) => {
+        const transformedRanges: GolfRange[] = filteredRangeData.map((range: any) => {
           let distance = 0
 
           if (range.latitude && range.longitude) {

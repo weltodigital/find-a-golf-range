@@ -27,8 +27,8 @@ export default async function GlobalSimulatorsPage() {
   // Fetch all simulators to calculate stats
   const { data, error } = await supabase
     .from('golf_ranges')
-    .select('city, county')
-    .contains('special_features', ['Indoor Simulator'])
+    .select('city, county, special_features')
+    .or('special_features.cs.{"indoor simulators"},special_features.cs.{"Indoor Simulator"}')
 
   let countries: CountryStats[] = []
   let totalSimulators = 0
@@ -39,7 +39,13 @@ export default async function GlobalSimulatorsPage() {
     const countryGroups: { [key: string]: { cities: Set<string>, count: number } } = {}
 
     data.forEach(item => {
-      const country = 'United Kingdom' // All venues are UK based on county data
+      let country = 'United Kingdom' // Default to UK
+
+      // Check if this is an Australian venue
+      if (item.special_features?.includes('australia')) {
+        country = 'Australia'
+      }
+
       if (!countryGroups[country]) {
         countryGroups[country] = { cities: new Set(), count: 0 }
       }
@@ -121,7 +127,11 @@ export default async function GlobalSimulatorsPage() {
               {countries.map((country) => (
                 <Link
                   key={country.country}
-                  href={country.country === 'United Kingdom' ? '/simulators/uk' : `/simulators/${country.slug}`}
+                  href={
+                    country.country === 'United Kingdom' ? '/simulators/uk' :
+                    country.country === 'Australia' ? '/simulators/australia' :
+                    `/simulators/${country.slug}`
+                  }
                   className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-6 border border-gray-200 group"
                 >
                   <div className="text-center">
