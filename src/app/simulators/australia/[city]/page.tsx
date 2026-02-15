@@ -240,7 +240,6 @@ export default function SimulatorCityPage({ params }: PageProps) {
       'oatlands': { latitude: -42.3012, longitude: 147.3720 },
       'whitsundays': { latitude: -20.2781, longitude: 148.7008 },
       'agnes water': { latitude: -24.2167, longitude: 151.9000 },
-      'geraldton': { latitude: -28.7774, longitude: 114.6147 },
       'dawesville': { latitude: -32.6422, longitude: 115.6394 },
       'newman': { latitude: -23.3595, longitude: 119.7354 },
       'port douglas': { latitude: -16.4839, longitude: 145.4639 },
