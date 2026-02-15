@@ -86,7 +86,6 @@ const getCityCoordinates = (city: string): [number, number] => {
     whitsundays: { latitude: -20.2781, longitude: 148.9706 },
     'forster-tuncurry': { latitude: -32.1833, longitude: 152.5167 },
     'forstertuncurry': { latitude: -32.1833, longitude: 152.5167 },
-    'forster-tuncurry': { latitude: -32.1833, longitude: 152.5167 },
     katherine: { latitude: -14.4669, longitude: 132.2647 },
     'alice-springs': { latitude: -23.6980, longitude: 133.8807 },
     devonport: { latitude: -41.1789, longitude: 146.3540 },
