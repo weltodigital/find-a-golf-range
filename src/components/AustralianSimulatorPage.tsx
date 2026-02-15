@@ -343,10 +343,17 @@ export default function AustralianSimulatorPage({ slug, cityName, cityPath, city
             </p>
             <div className="rounded-lg overflow-hidden" style={{ height: '400px' }}>
               <OpenStreetMap
-                simulators={[simulator]}
-                centerCoords={[simulator.latitude, simulator.longitude]}
+                markers={[{
+                  id: simulator.id.toString(),
+                  name: simulator.name,
+                  latitude: simulator.latitude || 0,
+                  longitude: simulator.longitude || 0,
+                  description: simulator.description || simulator.address,
+                  link: `/simulators/australia/${simulator.city.toLowerCase().replace(/\s+/g, '-')}/${simulator.slug}`,
+                  address: simulator.address
+                }]}
+                center={[simulator.latitude || 0, simulator.longitude || 0]}
                 zoom={15}
-                className="w-full h-full"
               />
             </div>
           </div>
