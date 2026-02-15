@@ -1,13 +1,15 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { IndoorSimulator } from '@/types'
+import { getCitySlugFromName } from '@/lib/utils'
 
 interface SimulatorCardProps {
   simulator: IndoorSimulator
   distanceFrom?: string
+  isAustralia?: boolean
 }
 
-export default function SimulatorCard({ simulator, distanceFrom = 'London' }: SimulatorCardProps) {
+export default function SimulatorCard({ simulator, distanceFrom = 'London', isAustralia = false }: SimulatorCardProps) {
   const displayFacilities = simulator.facilities || (simulator.simulator_features ? simulator.simulator_features.split(', ') : [])
   const imageUrl = simulator.images && simulator.images.length > 0 ? simulator.images[0] : null
 
@@ -40,7 +42,7 @@ export default function SimulatorCard({ simulator, distanceFrom = 'London' }: Si
           <div className="flex gap-2 mb-2">
             {simulator.distance && simulator.distance > 0 ? (
               <span className="bg-green-600 text-white text-xs px-2 py-1 rounded">
-                {simulator.distance} mi from {distanceFrom}
+                {simulator.distance} {isAustralia ? 'km' : 'mi'} from {distanceFrom}
               </span>
             ) : (
               <span className="bg-gray-500 text-white text-xs px-2 py-1 rounded">
@@ -137,7 +139,7 @@ export default function SimulatorCard({ simulator, distanceFrom = 'London' }: Si
             )}
           </div>
           <Link
-            href={`/simulators/uk/${simulator.city.toLowerCase().replace(/\s+/g, '-')}/${simulator.slug}`}
+            href={`/simulators/${isAustralia ? 'australia' : 'uk'}/${isAustralia ? getCitySlugFromName(simulator.city) : simulator.city.toLowerCase().replace(/\s+/g, '-')}/${simulator.slug}`}
             className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors text-sm font-medium"
           >
             View Details
