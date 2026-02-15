@@ -114,7 +114,7 @@ export default function RangeCard({ range }: RangeCardProps) {
             )}
           </div>
           <Link
-            href={`/uk/${range.city.toLowerCase()}/${range.slug}`}
+            href={`/uk/${range.city.toLowerCase().replace(/\s+/g, '-')}/${range.slug}`}
             className="bg-primary text-white px-4 py-2 rounded-md hover:bg-green-600 transition-colors text-sm font-medium"
           >
             View Details
