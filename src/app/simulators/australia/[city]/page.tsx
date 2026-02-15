@@ -238,7 +238,6 @@ export default function SimulatorCityPage({ params }: PageProps) {
       'barossa valley': { latitude: -34.5597, longitude: 138.9594 },
       'bridport': { latitude: -40.7056, longitude: 147.3811 },
       'oatlands': { latitude: -42.3012, longitude: 147.3720 },
-      'katherine': { latitude: -14.4669, longitude: 132.2647 },
       'whitsundays': { latitude: -20.2781, longitude: 148.7008 },
       'agnes water': { latitude: -24.2167, longitude: 151.9000 },
       'geraldton': { latitude: -28.7774, longitude: 114.6147 },
